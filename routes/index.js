@@ -11,7 +11,7 @@ router.get('/toPdf', function(req, res) {
   var phInstance = null;
   var tmpFileName = null;
   var requestArray = [];
-  phantom.create()
+  phantom.create(['--ignore-ssl-errors=yes'])
     .then(function(instance) {
       phInstance = instance;
       return instance.createPage();
@@ -25,14 +25,20 @@ router.get('/toPdf', function(req, res) {
     })
     .then(function(property) {
       sitePage.on('onResourceRequested', function(requestData, networkRequest) {
-        console.log('requestData', requestData);
-        console.log('networkRequest', networkRequest);
+        //console.log('requestData', requestData);
+        //console.log('networkRequest', networkRequest);
         requestArray.push(requestData.id);
       });
       sitePage.on('onResourceReceived', function(response) {
-        console.log('response', response);
+        //console.log('response', response);
         var index = requestArray.indexOf(response.id);
         requestArray.splice(index, 1);
+      });
+      sitePage.on('onConsoleMessage', function(msg) {
+        console.log('onConsoleMessage', msg);
+      });
+      sitePage.on('onError', function(err) {
+        console.log('onError', err);
       });
       var reqUrl =req.query.url.indexOf('?') > -1 ? req.query.url+'&token='+req.query.token+'&newsletter=true' : req.query.url+'?token='+req.query.token+'&newsletter=true';
       console.log(reqUrl);
@@ -41,7 +47,7 @@ router.get('/toPdf', function(req, res) {
     .then(function(status) {
       console.log(status);
       //var tmpFile = tmp.fileSync();
-      tmpFileName = tmpfile('.pdf');
+      tmpFileName = tmpfile('.png');
       console.log(tmpFileName);
       setTimeout(function() {
         var interval = setInterval(function() {

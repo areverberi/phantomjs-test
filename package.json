@@ -12,6 +12,7 @@
     "fs": "0.0.2",
     "jade": "^1.11.0",
     "morgan": "^1.6.1",
+    "pdfkit": "^0.7.2",
     "phantom": "^2.1.13",
     "serve-favicon": "^2.3.0",
     "tempfile": "^1.1.1"

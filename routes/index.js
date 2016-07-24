@@ -4,9 +4,10 @@ var phantom = require('phantom');
 //var tmp = require('tmp');
 var tmpfile = require('tempfile');
 var fs = require('fs');
+var pdfDocument = require('pdfkit');
 //var nightmare = require('nightmare');
 /* GET home page. */
-router.get('/toPdf', function(req, res) {
+router.get('/toPng', function(req, res) {
   var sitePage = null;
   var phInstance = null;
   var tmpFileName = null;
@@ -48,6 +49,7 @@ router.get('/toPdf', function(req, res) {
       console.log(status);
       //var tmpFile = tmp.fileSync();
       tmpFileName = tmpfile('.png');
+      tmpPdfName = tmpfile('.pdf');
       console.log(tmpFileName);
       setTimeout(function() {
         var interval = setInterval(function() {
@@ -58,12 +60,24 @@ router.get('/toPdf', function(req, res) {
               .then(function(render) {
                 console.log('render result: ', render);
                 phInstance.exit();
+                // res.writeHead(200, {
+                //     'Content-Type': 'application/pdf',
+                //     'Access-Control-Allow-Origin': '*',
+                //     'Content-Disposition': 'attachment; filename=Untitled.pdf'
+                // });
+                // return doc.pipe(res).image(tmpFileName).end();
+                // var doc = new pdfDocument();
+                // doc.pipe(fs.createWriteStream(tmpPdfName));
+                // doc.image(tmpFileName, 0, 0, {width : 1920});
+                // doc.end();
+                // console.log('tmpPdfName', tmpPdfName);
                 return res.download(tmpFileName);
+                //return res.download(tmpPdfName);
               });
 
           }
-        }, 10000);
-      }, 10000);
+        }, 500);
+      }, 1000);
 
 
     })

@@ -14,8 +14,7 @@
     "morgan": "^1.6.1",
     "phantom": "^2.1.13",
     "serve-favicon": "^2.3.0",
-    "tempfile": "^1.1.1",
-    "tmp": "0.0.28"
+    "tempfile": "^1.1.1"
   },
   "devDependencies": {
     "gulp": "^3.9.0",
